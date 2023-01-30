@@ -1,12 +1,16 @@
 const express = require('express');
 const app = express();
 const port = 3000;
+const path = require('path')
 
 
 app.set('view engine', 'ejs');
+//update location of the folder for the res.render to use
+app.set('views', path.join(__dirname, 'src/templates/views'))
+
 
 app.get('/', (req, res) => {
-    res.render('register', {username: 'tylerm' });
+    res.send('Hello World');
 });
 
 //import the function from the routes module
