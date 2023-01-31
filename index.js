@@ -3,11 +3,21 @@ dotenv.config()
 const express = require('express');
 const app = express();
 const port = 3000;
-const path = require('path')
-const { connectDB } = require('./src/db')
+const path = require('path');
+const { connectDB } = require('./src/db');
+const { graphqlHTTP } = require('express-graphql');
+const schema = require('./src/graphql/schema');
+
 
 //execute the connectDB function to our database
 connectDB();
+
+// Add graphql middleware to app
+app.use('/graphql', graphqlHTTP({
+    schema,
+    graphiql: true
+}))
+
 
 app.set('view engine', 'ejs');
 //update location of the folder for the res.render to use
