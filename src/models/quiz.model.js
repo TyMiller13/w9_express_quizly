@@ -6,7 +6,7 @@ const quizSchema = new mongoose.Schema(
         slug: {
             type: String,
             unique: true,
-            require: true
+            required: true
         },
         title: {
             type: String,
@@ -16,14 +16,13 @@ const quizSchema = new mongoose.Schema(
             type: String,
             required: true
         },
-        userID: {
+        userId: {
             type: String,
             required: true
         }
     },
-    {timestamps: true}
+    { timestamps: true }
 )
 
 
-
-module.exports = mongoose.model("Quiz", quizSchema)
+module.exports = mongoose.model("Quiz", quizSchema);

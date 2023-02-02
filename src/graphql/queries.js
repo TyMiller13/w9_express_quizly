@@ -1,32 +1,31 @@
-//Import Types from graphql
-const { GraphQLList, GraphQLID, GraphQLString } = require('graphql')
-//Import our own created type(s)
-const { UserType, QuizType } = require('./types')
-//Import model so we can get data from MongoDB
-const { User, Quiz } = require('../models')
+// Import Types from graphql
+const { GraphQLList, GraphQLID, GraphQLString } = require('graphql');
+// Import our own created type(s)
+const { UserType, QuizType } = require('./types');
+// Import model so we can get data from MongoDB
+const { User, Quiz } = require('../models');
 
 
 const users = {
     type: new GraphQLList(UserType),
     description: 'Get all users from the database',
-    async resolve(parent, args){
-        let users = await User.find()
-        console.log(users)
-        return users
+    resolve(parent, args){
+        return User.find()
     }
 }
+
 
 const user = {
     type: UserType,
     description: 'Query single user from database by ID',
     args: {
-        id: {type: GraphQLID}
+        id: { type: GraphQLID }
     },
     resolve(parent, args){
-        console.log(parent, args)
         return User.findById(args.id)
     }
 }
+
 
 const quizBySlug = {
     type: QuizType,
@@ -37,12 +36,11 @@ const quizBySlug = {
     resolve(parent, args){
         return Quiz.findOne({ slug: args.slug })
     }
-
 }
 
 
 module.exports = {
-    users, 
+    users,
     user,
-    quizBySlug
+    quizBySlug,
 }
