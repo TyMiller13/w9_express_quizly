@@ -7,8 +7,8 @@ const unprotectedRoutes = [
 ];
 
 const authenticate = async (req, res, next) => {
-    console.log('Authentication middleware');
-    console.log(req.cookies);
+    // console.log('Authentication middleware');
+    // console.log(req.cookies);
 
     
     try {
