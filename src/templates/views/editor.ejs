@@ -1,4 +1,4 @@
-<%- include('../partials/header.ejs')%>
+<%- include('../partials/header.ejs') %>
 
 <div class="container">
     <div class="row">
@@ -12,24 +12,29 @@
                 <div class="card mt-4">
                     <div class="card-body">
                         <div class="form-group">
-                            <label for="quizDescription"> Quiz Description</label>
+                            <label for="quizTitle">Quiz Title</label>
+                            <input type="text" name="quizTitle" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="quizDescription">Quiz Description</label>
                             <input type="text" name="quizDescription" class="form-control" required>
                         </div>
                     </div>
                 </div>
 
                 <div id="questionCards">
+                    
 
                 </div>
 
                 <div class="card mt-4">
                     <div class="card-body">
-                        <button class="form-control btn btn-success btn-block" type="button"> Add Question </button>
+                        <button class="form-control btn btn-success btn-block" type="button" onclick="addQuestion()">Add Question +</button>
                     </div>
                 </div>
                 <div class="card mt-4">
                     <div class="card-body">
-                        <button class="form-control btn btn-primary btn-block" type="submit"> Submit Quiz </button>
+                        <button class="form-control btn btn-primary btn-block" type="submit" >Submit Quiz</button>
                     </div>
                 </div>
             </form>
@@ -37,4 +42,63 @@
     </div>
 </div>
 
-<%- include('../partials/footer.ejs')%>
+
+
+
+<script>
+    const questionWrapper = document.getElementById('questionCards');
+    
+    let questions = [
+        {
+            text: '',
+            answer: ''
+        }
+    ];
+
+    const buildQuestions = (questions, wrapper) => {
+        wrapper.innerHTML = '';
+        for (let i=0; i<questions.length; i++){
+            wrapper.innerHTML += `
+            <div class="card mt-4" >
+                <div class="card-body">
+                    <h2 class="mb-4 text-md"> Question ${i+1}</h2>
+                    <div class="form-group">
+                        <label for="qustionTitle${i}"> Question Text</label>
+                        <input type="text" name="questionTitle${i}" class="form-control" required data-question="${i}" data-input="text" value="${questions[i].text}" onChange="inputChange(event)">
+                    </div>
+                    <div class="form-group">
+                        <label for="qustionAnswer${i}"> Question Answer</label>
+                        <input type="text" name="questionAnswer${i}" class="form-control" required data-question="${i}" data-input="answer" value="${questions[i].answer}" onChange="inputChange(event)" >
+                    </div>
+                    <button class="btn btn-danger mt-3" data-question="${i}" onclick="deleteQuestion(event)">Delete Question</button>
+                </div>
+            </div>
+
+            `
+        }
+    }
+
+    const addQuestion = (e) => {
+        questions.push({text: '', answer: ''});
+        buildQuestions(questions, questionWrapper);
+    }
+
+    const deleteQuestion = (e) => {
+        let questionIndex = e.target.dataset.question;
+        
+        questions.splice(questionIndex, 1);
+        buildQuestions(questions, questionWrapper);
+    }
+    
+    const inputChange = (e) => {
+        let questionIndex = e.target.dataset.question;
+        
+        questions[questionIndex][e.target.dataset.input] = e.target.value;
+
+        buildQuestions(questions, questionWrapper);
+    }
+
+    buildQuestions(questions, questionWrapper)
+</script>
+
+<%- include('../partials/footer.ejs') %>
