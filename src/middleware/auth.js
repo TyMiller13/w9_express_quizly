@@ -1,23 +1,20 @@
-const jwt = require('jsonwebtoken')
-
+const jwt = require('jsonwebtoken');
 const unprotectedRoutes = [
     "/auth/register",
     "/auth/login",
     "/graphql"
 ];
 
-const authenticate = async (req, res, next) => {
-    // console.log('Authentication middleware');
-    // console.log(req.cookies);
 
+const authenticate = async (req, res, next) => {
     
     try {
         const token = req.cookies?.jwtToken || ""
-        const verified = await jwt.verify(token, process.env.JWT_SECRET);
+        const verified = jwt.verify(token, process.env.JWT_SECRET);
         req.verifiedUser = verified.user;
         next()
-    } catch(err) {
-
+    } catch(err){
+        // console.log(err);
         if (unprotectedRoutes.includes(req.path)){
             next();
         } else {
